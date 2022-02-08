@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ruleset name="Collection">
+<description>librairie de gestion des tableaux</description>
+
+<arg name="colors"/>
+<arg value="p"/>
+
+<file>src</file>
+
+    <rule ref="PSR2"/>
+
+</ruleset>
