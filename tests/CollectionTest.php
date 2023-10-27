@@ -209,4 +209,15 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(['cinq','six'], $test->take(-2)->toArray());
     }
     // key
+    public function testKeysCollection()
+    {
+        $test = new Collection(['id' => 100, 'product' => 'banane', 'price'=> 10]);
+        $this->assertEquals(['id','product', 'price'], $test->keys()->toArray());
+    }
+    // exist
+    public function testExistCollection()
+    {
+        $test = new Collection(['id' => 100, 'product' => 'banane', 'price'=> 10]);
+        $this->assertTrue($test->exists('product'));
+    }
 }

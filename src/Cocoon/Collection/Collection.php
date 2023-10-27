@@ -359,7 +359,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
                 }
             }
         }
-        return $this->offsetExists($key);
+        return $this->offsetExists($args[0]);
     }
 
     /**
