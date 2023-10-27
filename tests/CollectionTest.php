@@ -189,4 +189,24 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('FRANCK, MAURICE, HENRI, DIDIER', $filter);
     }
     // shift
+    public function testShiftCollection()
+    {
+        $test = new Collection(['un', 'deux', 'trois', 'quatre']);
+        $this->assertSame('un', $test->shift());
+    }
+    // sort
+    public function testSortCollection()
+    {
+        $test = new Collection(['un', 'deux', 'trois', 'quatre']);
+        $this->assertEquals(['deux', 'quatre', 'trois', 'un'], $test->sort()->toArray());
+        $this->assertEquals(['un', 'trois', 'quatre', 'deux'], $test->sort('desc')->toArray());
+    }
+    // take
+    public function testTakeCollection()
+    {
+        $test = new Collection(['un', 'deux', 'trois', 'quatre','cinq','six']);
+        $this->assertEquals(['un','deux'], $test->take(2)->toArray());
+        $this->assertEquals(['cinq','six'], $test->take(-2)->toArray());
+    }
+    // key
 }
