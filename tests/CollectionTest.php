@@ -220,4 +220,5 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $test = new Collection(['id' => 100, 'product' => 'banane', 'price'=> 10]);
         $this->assertTrue($test->exists('product'));
     }
+    // only
 }
