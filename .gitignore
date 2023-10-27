@@ -4,3 +4,4 @@
 composer.lock
 index.php
 data.php
+.phpunit.result.cache
