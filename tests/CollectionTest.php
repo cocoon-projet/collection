@@ -7,7 +7,7 @@ use Cocoon\Collection\Collection;
 
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
-    protected $numCollection = [1,2,3,4,5];
+    protected $numCollection = [1, 2, 3, 4, 5];
     protected $object = [];
 
     public function testEmptyCollection()
@@ -31,19 +31,19 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testFirstItemCollection()
     {
-        $collection = new Collection(['franck', 'didier','maurice', 'henri', 'jean', 'alvin']);
+        $collection = new Collection(['franck', 'didier', 'maurice', 'henri', 'jean', 'alvin']);
         $this->assertSame('franck', $collection->first());
     }
 
     public function testLastItemCollection()
     {
-        $collection = new Collection(['franck', 'didier','maurice', 'henri', 'jean', 'alvin']);
+        $collection = new Collection(['franck', 'didier', 'maurice', 'henri', 'jean', 'alvin']);
         $this->assertSame('alvin', $collection->last());
     }
 
     public function testAllReturnCollection()
     {
-        $persons = ['franck', 'didier','maurice', 'henri', 'jean', 'alvin'];
+        $persons = ['franck', 'didier', 'maurice', 'henri', 'jean', 'alvin'];
         $collection = new Collection($persons);
         $this->assertSame($persons, $collection->all());
     }
@@ -57,8 +57,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     public function testSumColumnNumberCollection()
     {
         $collect = [
-            ['product' => 'ps5', 'price' => 250 ],
-            ['product' => 'xbox', 'price' => 300 ]
+            ['product' => 'ps5', 'price' => 250],
+            ['product' => 'xbox', 'price' => 300]
         ];
         $collection = new Collection($collect);
         $this->assertSame(550, $collection->sum('price'));
@@ -83,7 +83,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testChunkCollection()
     {
-        $array = [0,1,2,3,4,5,6,7];
+        $array = [0, 1, 2, 3, 4, 5, 6, 7];
         $collection = new Collection($array);
         $count = count($collection->chunk(2));
         $this->assertSame(4, $count);
@@ -92,8 +92,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     public function testColumnCollection()
     {
         $collect = [
-            ['id' => 110, 'product' => 'ps5', 'price' => 250 ],
-            ['id' => 111, 'product' => 'xbox', 'price' => 300 ]
+            ['id' => 110, 'product' => 'ps5', 'price' => 250],
+            ['id' => 111, 'product' => 'xbox', 'price' => 300]
         ];
         $result = [0 => 'ps5', 1 => 'xbox'];
         $result_two = [110 => 'ps5', 111 => 'xbox'];
@@ -104,7 +104,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testRandCollection()
     {
-        $collection = new Collection(['franck', 'didier','maurice', 'henri', 'jean', 'alvin']);
+        $collection = new Collection(['franck', 'didier', 'maurice', 'henri', 'jean', 'alvin']);
         $input = $collection->rand(2);
         $this->assertSame(2, count($input));
         $this->assertTrue(is_string($collection[$input[0]]));
@@ -112,15 +112,15 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testAvgNumberCollection()
     {
-        $collection = new Collection([1,2,3,4,5]);
+        $collection = new Collection([1, 2, 3, 4, 5]);
         $this->assertSame(3, $collection->avg());
     }
 
     public function testAvgColumnCollection()
     {
         $collect = [
-            ['product' => 'ps5', 'price' => 250 ],
-            ['product' => 'xbox', 'price' => 350 ]
+            ['product' => 'ps5', 'price' => 250],
+            ['product' => 'xbox', 'price' => 350]
         ];
         $collection = new Collection($collect);
         $this->assertSame(300, $collection->avg('price'));
@@ -153,14 +153,14 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testFilterCollection()
     {
-        $this->object[] = new Student('franck', 53, [10,20,20]);
-        $this->object[] = new Student('maurice', 63, [15,15,15]);
-        $this->object[] = new Student('henri', 45, [5,10,15]);
-        $this->object[] = new Student('didier', 56, [13,18,11]);
-        $this->object[] = new Student('jean', 32, [0,13,17]);
-        $this->object[] = new Student('alvin', 25, [11,12,13]);
-        $this->object[] = new Student('romain', 37, [12,13,14]);
-        $this->object[] = new Student('benoit', 22, [7,19,16]);
+        $this->object[] = new Student('franck', 53, [10, 20, 20]);
+        $this->object[] = new Student('maurice', 63, [15, 15, 15]);
+        $this->object[] = new Student('henri', 45, [5, 10, 15]);
+        $this->object[] = new Student('didier', 56, [13, 18, 11]);
+        $this->object[] = new Student('jean', 32, [0, 13, 17]);
+        $this->object[] = new Student('alvin', 25, [11, 12, 13]);
+        $this->object[] = new Student('romain', 37, [12, 13, 14]);
+        $this->object[] = new Student('benoit', 22, [7, 19, 16]);
 
         $collection = new Collection($this->object);
         $filter = $collection->filter(function ($student) {
@@ -171,14 +171,14 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testMapCollection()
     {
-        $this->object[] = new Student('franck', 53, [10,20,20]);
-        $this->object[] = new Student('maurice', 63, [15,15,15]);
-        $this->object[] = new Student('henri', 45, [5,10,15]);
-        $this->object[] = new Student('didier', 56, [13,18,11]);
-        $this->object[] = new Student('jean', 32, [0,13,17]);
-        $this->object[] = new Student('alvin', 25, [11,12,13]);
-        $this->object[] = new Student('romain', 37, [12,13,14]);
-        $this->object[] = new Student('benoit', 22, [7,19,16]);
+        $this->object[] = new Student('franck', 53, [10, 20, 20]);
+        $this->object[] = new Student('maurice', 63, [15, 15, 15]);
+        $this->object[] = new Student('henri', 45, [5, 10, 15]);
+        $this->object[] = new Student('didier', 56, [13, 18, 11]);
+        $this->object[] = new Student('jean', 32, [0, 13, 17]);
+        $this->object[] = new Student('alvin', 25, [11, 12, 13]);
+        $this->object[] = new Student('romain', 37, [12, 13, 14]);
+        $this->object[] = new Student('benoit', 22, [7, 19, 16]);
 
         $collection = new Collection($this->object);
         $filter = $collection->filter(function ($student) {
@@ -204,23 +204,44 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     // take
     public function testTakeCollection()
     {
-        $test = new Collection(['un', 'deux', 'trois', 'quatre','cinq','six']);
-        $this->assertEquals(['un','deux'], $test->take(2)->toArray());
-        $this->assertEquals(['cinq','six'], $test->take(-2)->toArray());
+        $test = new Collection(['un', 'deux', 'trois', 'quatre', 'cinq', 'six']);
+        $this->assertEquals(['un', 'deux'], $test->take(2)->toArray());
+        $this->assertEquals(['cinq', 'six'], $test->take(-2)->toArray());
     }
     // key
     public function testKeysCollection()
     {
-        $test = new Collection(['id' => 100, 'product' => 'banane', 'price'=> 10]);
-        $this->assertEquals(['id','product', 'price'], $test->keys()->toArray());
+        $test = new Collection(['id' => 100, 'product' => 'banane', 'price' => 10]);
+        $this->assertEquals(['id', 'product', 'price'], $test->keys()->toArray());
     }
     // exist
     public function testExistCollection()
     {
-        $test = new Collection(['id' => 100, 'product' => 'banane', 'price'=> 10]);
+        $test = new Collection(['id' => 100, 'product' => 'banane', 'price' => 10]);
         $this->assertTrue($test->exists('product'));
         $this->assertTrue($test->exists('product', 'id'));
         $this->assertFalse($test->exists('product', 'none'));
     }
     // only
+    public function testOnlyCollection()
+    {
+        $test = new Collection(['id' => 100, 'product' => 'play station', 'price' => 500, 'quantite' => 35]);
+        $this->assertEquals(['product' => 'play station', 'quantite' => 35], $test->only('product', 'quantite')->toArray());
+    }
+    // except
+    public function testExcepCollection()
+    {
+        $test = new Collection(['id' => 100, 'product' => 'play station', 'price' => 500, 'quantite' => 35]);
+        $this->assertEquals(['id' => '100', 'price' => 500], $test->except('product', 'quantite')->toArray());
+    }
+    // pluck
+    public function testPluckCollection()
+    {
+        $test = new Collection([
+            ['id' => 100, 'product' => 'Play Station', 'price' => 500, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]
+        ]);
+        $this->assertEquals(['Play Station', 'Sony TV'], $test->pluck('product')->toArray());
+        //$this->assertEquals([['Play Station' => 500], ['Sony TV' => 865]], $test->pluck('product', 'price')->toArray());
+    }
 }

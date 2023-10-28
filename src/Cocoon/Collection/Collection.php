@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Cocoon\Collection;
 
 use ArrayAccess;
@@ -314,11 +316,11 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
         }
         return new static(array_slice($this->collection, $offset, $limit));
     }
-   /**
-    * Retourne la collection
-    *
-    * @return array
-    */
+    /**
+     * Retourne la collection
+     *
+     * @return array
+     */
     public function toArray(): array
     {
         return $this->collection;
@@ -343,7 +345,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     {
         return new static(array_keys($this->collection));
     }
-     // TODO a tester
+    // TODO a tester
     /**
      * Vérifie si une clé de la collection existe
      *
@@ -401,10 +403,13 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
      * @param string $key
      * @return object Collection
      */
-    public function pluck(string $key)
+    public function pluck(...$args)
     {
-        return $this->map(function ($item) use ($key) {
-            return is_object($item) ? $item->$key : $item[$key];
-        });
+        $collect = [];
+        if (count($args) == 1) {
+            return $this->map(function ($item) use ($args) {
+                return is_object($item) ? $item->$args[0] : $item[$args[0]];
+            });
+        }
     }
 }
