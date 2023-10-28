@@ -263,4 +263,18 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
            2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
         ], $test->where('price', 500)->toArray());
     }
+     // whereIn
+     public function testWhereInCollection()
+     {
+         $test = new Collection([
+             ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+             ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+             ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+             ['id' => 103, 'product' => 'SonyTV', 'price' => 600, 'quantite' => 12],
+         ]);
+         $this->assertEquals([
+            0 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
+         ], $test->whereIn('price', [450,500])->toArray());
+     }
 }
