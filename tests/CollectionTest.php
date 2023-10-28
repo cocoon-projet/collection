@@ -250,4 +250,17 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $test = new Collection(['id' => 100, 'product' => 'Play Station', 'price' => 500, 'quantite' => 35]);
         $this->assertEquals(null, $test->get('none'));
     }
+    // where
+    public function testWhereCollection()
+    {
+        $test = new Collection([
+            ['id' => 100, 'product' => 'Play Station', 'price' => 500, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
+        ]);
+        $this->assertEquals([
+           0 => ['id' => 100, 'product' => 'Play Station', 'price' => 500, 'quantite' => 35],
+           2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
+        ], $test->where('price', 500)->toArray());
+    }
 }
