@@ -56,7 +56,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
      * @param mixed $offset
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->collection[$offset];
     }
@@ -65,7 +65,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
      * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->collection[] = $value;
@@ -77,7 +77,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     /**
      * @param mixed $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->collection[$offset]);
     }
@@ -265,15 +265,33 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
      */
     public function implode(...$args): string
     {
-        if (count($args) === 1) {
-            return implode($args[0], $this->collection);
-        } else {
+        if (empty($args[0])) {
+            $sep = ',';
+        }
+        if (count($args) == 1) {
+            if (strlen(trim($args[0], ' ')) == 1) {
+                $sep = $args[0];
+                return implode($sep, $this->all());
+            } else {
+                if (strlen($args[0]) > 1) {
+                    $sep = ',';
+                    $key = $args[0];
+                    $new = $this->map(function ($collect) use ($key) {
+                        return is_object($collect) ? $collect->{$key} : $collect[$key];
+                    });
+                    return implode($sep, $new->all());
+                }
+            }
+            return implode($sep, $this->all());
+        } elseif (count($args) === 2) {
+            $sep = $args[1];
             $key = $args[0];
             $new = $this->map(function ($collect) use ($key) {
                 return is_object($collect) ? $collect->{$key} : $collect[$key];
             });
-            return implode(', ', $new->all());
+            return implode($sep, $new->all());
         }
+        return implode($sep, $this->all());
     }
     /**
      *  Dépile un élément au début d'une collection et le retourne

@@ -280,4 +280,20 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
          ], $test->whereIn('price', [450,500])->toArray());
      }
+     // implode
+     public function testImplodeCollection()
+     {
+        $test = new Collection(['un', 'deux', 'trois', 'quatre']);
+        $this->assertEquals('un,deux,trois,quatre', $test->implode());
+        $this->assertEquals('un,deux,trois,quatre', $test->implode(','));
+        $shop = [
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+         ];
+         $test = new Collection($shop);
+         $this->assertEquals('Play Station,Sony TV,Samsung TV,TCL TV', $test->implode('product'));
+         $this->assertEquals('Play Station-Sony TV-Samsung TV-TCL TV', $test->implode('product', '-'));
+     }
 }
