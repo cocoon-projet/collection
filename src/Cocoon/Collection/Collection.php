@@ -282,7 +282,6 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
                     return implode($sep, $new->all());
                 }
             }
-            return implode($sep, $this->all());
         } elseif (count($args) === 2) {
             $sep = $args[1];
             $key = $args[0];
