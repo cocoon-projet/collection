@@ -242,7 +242,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]
         ]);
         $this->assertEquals(['Play Station', 'Sony TV'], $test->pluck('product')->toArray());
-        //$this->assertEquals([['Play Station' => 500], ['Sony TV' => 865]], $test->pluck('product', 'price')->toArray());
+        $this->assertEquals([0 =>['Play Station' => 500],1 => ['Sony TV' => 865]], $test->pluck('price', 'product')->all());
     }
     // get return null
     public function testGetNullCollection()

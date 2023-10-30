@@ -133,6 +133,27 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     {
         return end($this->collection);
     }
+    /**
+     * Convertir un tableau multidimensionnel en un simple tableau
+     *
+     * @param array $array
+     * @return array
+     */
+    public function flatten($array = []): array
+    {
+        if (sizeof($array) == 0) {
+            $array = $this->collection;
+        }
+        $flattened = [];
+        array_walk_recursive($array, function ($value, $key) use (&$flattened) {
+            if (!is_array($key) && !is_int($key)) {
+                $flattened[$key] = $value;
+            } else {
+                $flattened[] = $value;
+            }
+        });
+        return $flattened;
+    }
 
     /**
      * Retourne la collection ou la collection modifiée.
@@ -424,9 +445,16 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     {
         $collect = [];
         if (count($args) == 1) {
-            return $this->map(function ($item) use ($args) {
+            $return = $this->map(function ($item) use ($args) {
                 return is_object($item) ? $item->$args[0] : $item[$args[0]];
             });
+            return $return;
+        }
+        if(count($args) == 2) {
+            $return = $this->map(function ($item) use ($args) {
+                return is_object($item) ? [$item->$args[1] => $item->$args[0]] : [$item[$args[1]] => $item[$args[0]]];
+            });
+            return $return;
         }
     }
 }
