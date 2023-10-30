@@ -10,6 +10,6 @@
 
 via composer
 ```
-composer require cocoon-projet/di
+composer require cocoon-projet/collection
 ```
 ## Documentation
