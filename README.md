@@ -4,7 +4,7 @@
 
 ## Pré-requis
 
-![PHP Version](https://img.shields.io/badge/php version-8.0-blue)
+![PHP Version](https://img.shields.io/badge/php:version-8.0-blue)
 
 ## Installation
 
