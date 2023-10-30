@@ -450,7 +450,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
             });
             return $return;
         }
-        if(count($args) == 2) {
+        if (count($args) == 2) {
             $return = $this->map(function ($item) use ($args) {
                 return is_object($item) ? [$item->$args[1] => $item->$args[0]] : [$item[$args[1]] => $item[$args[0]]];
             });
