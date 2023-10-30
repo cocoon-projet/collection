@@ -242,7 +242,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]
         ]);
         $this->assertEquals(['Play Station', 'Sony TV'], $test->pluck('product')->toArray());
-        $this->assertEquals([0 =>['Play Station' => 500],1 => ['Sony TV' => 865]], $test->pluck('price', 'product')->all());
+        $this->assertEquals([0 => ['Play Station' => 500], 1 => ['Sony TV' => 865]], $test->pluck('price', 'product')->all());
     }
     // get return null
     public function testGetNullCollection()
@@ -259,30 +259,30 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
         ]);
         $this->assertEquals([
-           0 => ['id' => 100, 'product' => 'Play Station', 'price' => 500, 'quantite' => 35],
-           2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
+            0 => ['id' => 100, 'product' => 'Play Station', 'price' => 500, 'quantite' => 35],
+            2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
         ], $test->where('price', 500)->toArray());
         $this->assertEquals([
             1 =>  ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]
-         ], $test->where('price', '>', 500)->toArray());
+        ], $test->where('price', '>', 500)->toArray());
     }
-     // whereIn
-     public function testWhereInCollection()
-     {
-         $test = new Collection([
-             ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
-             ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
-             ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
-             ['id' => 103, 'product' => 'SonyTV', 'price' => 600, 'quantite' => 12],
-         ]);
-         $this->assertEquals([
+    // whereIn
+    public function testWhereInCollection()
+    {
+        $test = new Collection([
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'SonyTV', 'price' => 600, 'quantite' => 12],
+        ]);
+        $this->assertEquals([
             0 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
             2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
-         ], $test->whereIn('price', [450,500])->toArray());
-     }
-     // implode
-     public function testImplodeCollection()
-     {
+        ], $test->whereIn('price', [450, 500])->toArray());
+    }
+    // implode
+    public function testImplodeCollection()
+    {
         $test = new Collection(['un', 'deux', 'trois', 'quatre']);
         $this->assertEquals('un,deux,trois,quatre', $test->implode());
         $this->assertEquals('un,deux,trois,quatre', $test->implode(','));
@@ -291,9 +291,97 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
             ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
             ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
-         ];
-         $test = new Collection($shop);
-         $this->assertEquals('Play Station,Sony TV,Samsung TV,TCL TV', $test->implode('product'));
-         $this->assertEquals('Play Station-Sony TV-Samsung TV-TCL TV', $test->implode('product', '-'));
-     }
+        ];
+        $test = new Collection($shop);
+        $this->assertEquals('Play Station,Sony TV,Samsung TV,TCL TV', $test->implode('product'));
+        $this->assertEquals('Play Station-Sony TV-Samsung TV-TCL TV', $test->implode('product', '-'));
+    }
+    // where not in
+    public function testWhereNotINCollection()
+    {
+        $shop = [
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+        ];
+        $test = new Collection($shop);
+        $this->assertEquals([
+            0 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
+        ], $test->whereNotIn('price', [865, 600])->all());
+    }
+    // where between
+    public function testWhereBetweenCollection()
+    {
+        $shop = [
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+        ];
+        $test = new Collection($shop);
+        $this->assertEquals([
+            2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            3 => ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12]
+        ], $test->whereBetween('price', [500, 800])->all());
+    }
+
+    // where between
+    public function testWhereNotBetweenCollection()
+    {
+        $shop = [
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+        ];
+        $test = new Collection($shop);
+        $this->assertEquals([
+            0 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            1 => ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]
+        ], $test->whereNotBetween('price', [500, 800])->all());
+    }
+    // where between
+    public function testOrderByCollection()
+    {
+        $shop = [
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 43],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+        ];
+        $test = new Collection($shop);
+        $this->assertEquals([
+            0 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 43],
+            1 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            2 => ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+            3 => ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]
+        ], $test->orderBy('price')->all());
+        $this->assertEquals([
+            0 => ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            1 => ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+            2 => ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            3 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 43]
+        ], $test->orderBy('price', 'desc')->all());
+    }
+    // groupBy
+    public function testWheregroupByCollection()
+    {
+        $shop = [
+            ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+            ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9],
+            ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35],
+            ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12],
+        ];
+        $test = new Collection($shop);
+        $this->assertEquals([
+            35 => [
+                0 => ['id' => 100, 'product' => 'Play Station', 'price' => 450, 'quantite' => 35],
+                1 =>  ['id' => 102, 'product' => 'Samsung TV', 'price' => 500, 'quantite' => 35]
+            ],
+            9 => [0 => ['id' => 101, 'product' => 'Sony TV', 'price' => 865, 'quantite' => 9]],
+            12 => [0 => ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12]]
+        ], $test->groupBy('quantite')->all());
+    }
 }
