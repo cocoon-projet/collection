@@ -414,4 +414,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             12 => [0 => ['id' => 103, 'product' => 'TCL TV', 'price' => 600, 'quantite' => 12]]
         ], $test->groupBy('quantite')->all());
     }
+    public function testSlice()
+    {
+        $test = new Collection(['1','2','3','4','5','6']);
+        $this->assertEquals(['2' => '3', '3' => '4', '4' => '5', '5' => '6'], $test->slice(2)->all());
+        $this->assertEquals(['2' => '3', '3' => '4'], $test->slice(2,2)->all());
+    }
 }

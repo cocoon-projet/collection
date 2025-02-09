@@ -334,6 +334,16 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
         return new static(array_slice($this->collection, $offset, $limit));
     }
     /**
+     * Decoupe le tableau de collection
+     * @param int $offset
+     * @param int|null $length
+     * @return Collection
+     */
+    public function slice($offset, $length = null): Collection
+    {
+        return new static(array_slice($this->collection, $offset, $length, true));
+    }
+    /**
      * Retourne la collection
      *
      * @return array
