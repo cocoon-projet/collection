@@ -445,4 +445,12 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
             return $return;
         }
     }
+
+    public function lists($value, $key)
+    {
+        if (is_string($key) && is_string($value)) {
+            return $this->column($value, $key);
+        }
+        return false;
+    }
 }
