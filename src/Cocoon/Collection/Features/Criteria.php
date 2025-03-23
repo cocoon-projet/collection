@@ -6,9 +6,9 @@ use InvalidArgumentException;
 
 /**
  * Trait Criteria
- * 
+ *
  * Fournit des méthodes de filtrage et de tri similaires à SQL pour les collections.
- * 
+ *
  * @template TKey of array-key
  * @template TValue
  * @mixin \Cocoon\Collection\Collection
@@ -26,7 +26,7 @@ trait Criteria
      */
     protected function criteria(string $operator, mixed $left, mixed $right): bool
     {
-        return match($operator) {
+        return match ($operator) {
             '=', '==' => $left == $right,
             '!=', '<>' => $left != $right,
             '<' => $left < $right,
@@ -41,7 +41,7 @@ trait Criteria
 
     /**
      * Filtre la collection selon une condition WHERE.
-     * 
+     *
      * @param string $key Clé à comparer
      * @param string|mixed $operatorOrValue Opérateur de comparaison ou valeur si l'opérateur est '='
      * @param mixed|null $value Valeur à comparer (optionnel si $operatorOrValue est la valeur)
@@ -184,8 +184,12 @@ trait Criteria
      * @return \Cocoon\Collection\Collection<TKey, TValue> Nouvelle collection avec les éléments joints
      * @throws InvalidArgumentException Si le type de jointure n'est pas valide
      */
-    public function join(\Cocoon\Collection\Collection $other, string $localKey, string $otherKey, string $type = 'inner'): \Cocoon\Collection\Collection
-    {
+    public function join(
+        \Cocoon\Collection\Collection $other,
+        string $localKey,
+        string $otherKey,
+        string $type = 'inner'
+    ): \Cocoon\Collection\Collection {
         if (!in_array($type, ['inner', 'left', 'right'], true)) {
             throw new InvalidArgumentException("Type de jointure '$type' non valide");
         }
@@ -241,9 +245,8 @@ trait Criteria
     {
         $values = array_map(
             fn($item) => is_object($item) ? $item->$key : $item[$key],
-            array_filter($this->collection, fn($item) => 
-                is_numeric(is_object($item) ? $item->$key : $item[$key])
-            )
+            array_filter($this->collection, fn($item) =>
+                is_numeric(is_object($item) ? $item->$key : $item[$key]))
         );
         
         return [
@@ -259,7 +262,8 @@ trait Criteria
      * Groupe les éléments par une clé.
      *
      * @param string|callable $key Clé ou callback de groupement
-     * @return \Cocoon\Collection\Collection<TKey, \Cocoon\Collection\Collection<TKey, TValue>> Nouvelle collection groupée
+     * @return \Cocoon\Collection\Collection<TKey, \Cocoon\Collection\Collection<TKey, TValue>>
+     *         Nouvelle collection groupée
      */
     public function groupBy(string|callable $key): \Cocoon\Collection\Collection
     {
@@ -337,7 +341,8 @@ trait Criteria
      *
      * @param string $key Clé à utiliser
      * @param int|float $interval Taille de l'intervalle
-     * @return \Cocoon\Collection\Collection<TKey, \Cocoon\Collection\Collection<TKey, TValue>> Collection groupée par intervalles
+     * @return \Cocoon\Collection\Collection<TKey, \Cocoon\Collection\Collection<TKey, TValue>>
+     *         Collection groupée par intervalles
      */
     public function groupByRange(string $key, int|float $interval): \Cocoon\Collection\Collection
     {
@@ -379,7 +384,7 @@ trait Criteria
             $sortable[$itemValue][] = $item;
         }
 
-        match($order) {
+        match ($order) {
             'asc' => ksort($sortable),
             'desc' => krsort($sortable)
         };
@@ -392,5 +397,13 @@ trait Criteria
         }
 
         return new static($result);
+    }
+
+    /**
+     * Vérifie si la collection n'est pas vide.
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->collection);
     }
 }

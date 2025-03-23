@@ -14,22 +14,22 @@ use Traversable;
 
 /**
  * Classe Collection
- * 
+ *
  * Wrapper moderne pour la manipulation de tableaux avec une interface fluide.
  * Cette classe fournit des méthodes pratiques pour travailler avec des ensembles de données.
- * 
+ *
  * Fonctionnalités principales :
  * - Manipulation de tableaux (ajout, suppression, modification)
  * - Filtrage et recherche (where, whereIn, whereBetween)
  * - Tri et groupement (sort, orderBy, groupBy)
  * - Agrégation (sum, avg, implode)
  * - Transformation (map, pluck, chunk)
- * 
+ *
  * Implémente les interfaces :
  * - Countable : pour compter les éléments
  * - ArrayAccess : pour accéder aux éléments comme un tableau
  * - IteratorAggregate : pour itérer sur les éléments
- * 
+ *
  * @template TKey of array-key
  * @template TValue
  * @implements IteratorAggregate<TKey, TValue>
@@ -58,7 +58,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
 
     /**
      * Retourne le nombre d'éléments dans la collection.
-     * 
+     *
      * @return int Nombre d'éléments
      */
     public function count(): int
@@ -362,7 +362,7 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
     {
         $collection = $this->collection;
         
-        match($order) {
+        match ($order) {
             'asc' => sort($collection),
             'desc' => rsort($collection),
             default => throw new InvalidArgumentException('L\'ordre de tri doit être "asc" ou "desc"')
@@ -432,19 +432,43 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
         return new static(array_keys($this->collection));
     }
 
-    /**
-     * Vérifie si une valeur ou une condition existe dans la collection.
+      /**
+     * Prend une ou plusieurs clés, au hasard dans une collection
      *
-     * @param TValue|callable(TValue, TKey): bool $value Valeur ou callback de recherche
-     * @return bool true si trouvé, false sinon
+     * @param $limit
+     * @return $this
      */
-    public function exists(mixed $value): bool
+    public function rand($limit): Collection
     {
-        if (is_callable($value)) {
-            return $this->filter($value)->isNotEmpty();
-        }
+        return new static(array_rand($this->collection, $limit));
+    }
 
-        return in_array($value, $this->collection, true);
+    /**
+     * Vérifie si une ou plusieurs valeurs existent dans la collection.
+     * Si une valeur est une chaîne, vérifie d'abord si elle existe comme clé.
+     * Sinon, vérifie si elle existe comme valeur.
+     *
+     * @param mixed ...$values Valeurs à vérifier
+     * @return bool true si toutes les valeurs existent, false sinon
+     */
+    public function exists(mixed ...$values): bool
+    {
+        foreach ($values as $value) {
+            if (is_callable($value)) {
+                if (!$this->filter($value)->isNotEmpty()) {
+                    return false;
+                }
+            } elseif (is_string($value)) {
+                if (!array_key_exists($value, $this->collection) && !in_array($value, $this->collection, true)) {
+                    return false;
+                }
+            } else {
+                if (!in_array($value, $this->collection, true)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -528,5 +552,31 @@ class Collection implements Countable, ArrayAccess, IteratorAggregate
             return $this->column($value, $key);
         }
         return false;
+    }
+
+    /**
+     * Calcule la somme des valeurs d'un tableau.
+     *
+     * @param array<int|string, int|float> $values Tableau de valeurs à sommer
+     * @return int|float Somme des valeurs
+     */
+    public function sumKey(array $values): int|float
+    {
+        return array_sum($values);
+    }
+
+    /**
+     * Calcule la moyenne des valeurs d'un tableau.
+     *
+     * @param array<int|string, int|float> $values Tableau de valeurs
+     * @return int|float Moyenne des valeurs
+     * @throws \DivisionByZeroError Si le tableau est vide
+     */
+    public function avgKey(array $values): int|float
+    {
+        if (empty($values)) {
+            throw new \DivisionByZeroError();
+        }
+        return $this->sumKey($values) / count($values);
     }
 }

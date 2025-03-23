@@ -143,9 +143,15 @@ $total = $collection->count();
 $somme = $collection->sum();
 $somme = $collection->sum('prix');
 
+// Calculer la somme d'un tableau de valeurs
+$sommeNotes = $collection->sumKey([10, 15, 20]); // Retourne 45
+
 // Calculer une moyenne
 $moyenne = $collection->avg();
 $moyenne = $collection->avg('age');
+
+// Calculer la moyenne d'un tableau de valeurs
+$moyenneNotes = $collection->avgKey([10, 15, 20]); // Retourne 15
 
 // Joindre les éléments
 $chaine = $collection->implode(', ');
